@@ -15,6 +15,17 @@ class Perspective:
         self.w_len = np.tan(np.radians(self.wFOV / 2.0))
         self.h_len = np.tan(np.radians(self.hFOV / 2.0))
 
+    def rodrigues_rot(self, rot_vector):
+        theta = np.linalg.norm(rot_vector)
+        r = rot_vector / theta
+        i = np.eye(3)
+        rr = np.tile(r, (3,1))*np.tile(r, (3,1)).T
+        rmap = np.array([
+            [0, -r[2], r[1]],
+            [r[2], 0, -r[0]],
+            [-r[1], r[0], 0]
+        ])
+        return np.cos(theta)*i + (1-np.cos(theta))*rr + np.sin(theta)*rmap
     
 
     def GetEquirec(self,height,width):
@@ -32,8 +43,10 @@ class Perspective:
 
         y_axis = np.array([0.0, 1.0, 0.0], np.float32)
         z_axis = np.array([0.0, 0.0, 1.0], np.float32)
-        [R1, _] = cv2.Rodrigues(z_axis * np.radians(self.THETA))
-        [R2, _] = cv2.Rodrigues(np.dot(R1, y_axis) * np.radians(-self.PHI))
+        R1 = self.rodrigues_rot(z_axis * np.radians(self.THETA))
+        R2 = self.rodrigues_rot(np.dot(R1, y_axis) * np.radians(-self.PHI))
+        #[R1, _] = cv2.Rodrigues(z_axis * np.radians(self.THETA))
+        #[R2, _] = cv2.Rodrigues(np.dot(R1, y_axis) * np.radians(-self.PHI))
 
         R1 = np.linalg.inv(R1)
         R2 = np.linalg.inv(R2)
