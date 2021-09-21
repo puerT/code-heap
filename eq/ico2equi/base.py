@@ -103,33 +103,32 @@ def ico2equi(
 
     # Try and detect which type it is ("numpy" or "torch")
     # FIXME: any cleaner way of detecting?
-    # _type = None
-    # if ico_format == "dict":
-    #     if isinstance(icomap, dict):
-    #         if isinstance(icomap["0"], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap["0"], torch.Tensor):
-    #             _type = "torch"
-    #     elif isinstance(icomap, list):
-    #         assert isinstance(icomap[0], dict)
-    #         if isinstance(icomap[0]["0"], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap[0]["0"], torch.Tensor):
-    #             _type = "torch"
-    # elif ico_format == "list":
-    #     assert isinstance(icomap, list)
-    #     if isinstance(icomap[0], list):
-    #         if isinstance(icomap[0][0], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap[0][0], torch.Tensor):
-    #             _type = "torch"
-    #     else:
-    #         if isinstance(icomap[0], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap[0], torch.Tensor):
-    #             _type = "torch"
-    # assert _type is not None, "ERR: input type is not numpy or torch"
-    _type = "numpy"
+    _type = None
+    if ico_format == "dict":
+        if isinstance(icomap, dict):
+            if isinstance(icomap["0"], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap["0"], torch.Tensor):
+                _type = "torch"
+        elif isinstance(icomap, list):
+            assert isinstance(icomap[0], dict)
+            if isinstance(icomap[0]["0"], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap[0]["0"], torch.Tensor):
+                _type = "torch"
+    elif ico_format == "list":
+        assert isinstance(icomap, list)
+        if isinstance(icomap[0], list):
+            if isinstance(icomap[0][0], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap[0][0], torch.Tensor):
+                _type = "torch"
+        else:
+            if isinstance(icomap[0], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap[0], torch.Tensor):
+                _type = "torch"
+    assert _type is not None, "ERR: input type is not numpy or torch"
     if _type == "numpy":
         #TODO: add in future
         #icomaps_batch = convert2batches(icomap, ico_format)
@@ -143,9 +142,10 @@ def ico2equi(
         )
     elif _type == "torch":
         out = run_torch(
-            horizon=icomap,
+            icomaps=icomap,
             height=height,
             width=width,
+            fov_x=fov_x,
             mode=mode,
             **kwargs,
         )

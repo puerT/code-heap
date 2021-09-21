@@ -148,7 +148,7 @@ def get_equirec(
 
 
 def run(
-    icomaps: List[np.ndarray],
+    icomaps: List[torch.Tensor],
     height: int,
     width: int,
     fov_x: float,
@@ -170,10 +170,10 @@ def run(
     """
 
     assert (
-        len(icomaps.shape) == 4
-    ), f"ERR: `horizon` should be 4-dim (b, c, h, w), but got {icomaps.shape}"
+        len(icomaps[0].shape) == 4
+    ), f"ERR: `horizon` should be 4-dim (b, c, h, w), but got {icomaps[0].shape}"
 
-    icomaps_dtype = icomaps.dtype
+    icomaps_dtype = icomaps[0].dtype
     assert icomaps_dtype in (
         torch.uint8,
         torch.float16,
@@ -205,9 +205,10 @@ def run(
     if backend == "native" and icomaps_dtype == torch.uint8:
         # FIXME: hacky way of dealing with images that are uint8 when using
         # torch.grid_sample
-        icomaps = icomaps.type(torch.float32)
+        for i, ico in enumerate(icomaps):
+            icomaps[i] = ico.type(torch.float32)
 
-    bs = len(icomaps)
+    bs, c = len(icomaps), icomaps[0].shape[1]
     device = get_device(icomaps[0])
     cpu_device = torch.device("cpu")
 
@@ -219,7 +220,6 @@ def run(
     zero = tensor(0, dtype=dtype, device=device)
     one = tensor(1, dtype=dtype, device=device)
     for bn, (imgs, angle) in enumerate(zip(icomaps, angles)):
-        c =  imgs.shape[1]
         angle *= tensor(-1*180/pi, dtype=dtype,device=device)
         out = torch.empty((c, height, width), dtype=dtype, device=device)
         merge_image = torch.zeros((c,height,width), dtype=dtype, device=device)
