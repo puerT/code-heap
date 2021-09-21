@@ -7,20 +7,18 @@ import numpy as np
 import torch
 
 from .numpy import (
-    convert2batches,
     run as run_numpy
 )
-# from .torch import (
-#     convert2horizon as convert2horizon_torch,
-#     run as run_torch,
-# )
+from .torch import (
+    run as run_torch,
+)
 
 __all__ = ["Ico2Equi", "ico2equi"]
 
 ArrayLike = Union[np.ndarray, torch.Tensor]
 IcoMaps = Union[
     # single/batch 'horizon' or 'dice'
-    # np.ndarray,
+    np.ndarray,
     # torch.Tensor,
     # single 'list'
     List[np.ndarray],
@@ -143,18 +141,14 @@ def ico2equi(
             mode=mode,
             **kwargs,
         )
-    # elif _type == "torch":
-    #     horizon = convert2horizon_torch(
-    #         cubemap=cubemap,
-    #         cube_format=cube_format,
-    #     )
-    #     out = run_torch(
-    #         horizon=horizon,
-    #         height=height,
-    #         width=width,
-    #         mode=mode,
-    #         **kwargs,
-    #     )
+    elif _type == "torch":
+        out = run_torch(
+            horizon=icomap,
+            height=height,
+            width=width,
+            mode=mode,
+            **kwargs,
+        )
     else:
         raise ValueError("Oops something went wrong here")
 
