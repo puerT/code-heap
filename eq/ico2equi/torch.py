@@ -83,9 +83,7 @@ def get_equirec(
     _height = tensor(_img.shape[1], dtype=torch.float32, device=device)
     _width = tensor(_img.shape[2], dtype=torch.float32, device=device) 
     wFOV = tensor(fov_x, dtype=torch.float32, device=device)
-    THETA = tensor(theta, dtype=torch.float32, device=device)
-    PHI = tensor(phi, dtype=torch.float32, device=device)
-    hFOV = tensor(_height / _width * fov_x, dtype=torch.float32, device=device)
+    hFOV = _height / _width * fov_x
 
     w_len = tan(radians(wFOV / 2.0))
     h_len = tan(radians(hFOV / 2.0))
@@ -107,8 +105,8 @@ def get_equirec(
 
     y_axis = tensor([0.0, 1.0, 0.0], dtype=torch.float32, device=device)
     z_axis = tensor([0.0, 0.0, 1.0], dtype=torch.float32, device=device)
-    R1 = rodrigues(z_axis * radians(THETA), device=device)
-    R2 = rodrigues(torch.mv(R1, y_axis) * radians(-PHI), device=device)
+    R1 = rodrigues(z_axis * radians(theta), device=device)
+    R2 = rodrigues(torch.mv(R1, y_axis) * radians(-phi), device=device)
 
     R1 = torch.linalg.inv(R1)
     R2 = torch.linalg.inv(R2)
@@ -220,7 +218,7 @@ def run(
     zero = tensor(0, dtype=dtype, device=device)
     one = tensor(1, dtype=dtype, device=device)
     for bn, (imgs, angle) in enumerate(zip(icomaps, angles)):
-        angle *= tensor(-1*180/pi, dtype=dtype,device=device)
+        angle *= -1*180/torch.clone(pi).to(dtype=dtype, device=device) 
         out = torch.empty((c, height, width), dtype=dtype, device=device)
         merge_image = torch.zeros((c,height,width), dtype=dtype, device=device)
         merge_mask = torch.zeros((c,height,width), dtype=dtype, device=device)
