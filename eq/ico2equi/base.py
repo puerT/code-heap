@@ -109,15 +109,15 @@ def ico2equi(
     _type = None
     if ico_format == "dict":
         if isinstance(icomap, dict):
-            if isinstance(icomap["0"], np.ndarray):
+            if isinstance(icomap[0], np.ndarray):
                 _type = "numpy"
-            elif isinstance(icomap["0"], torch.Tensor):
+            elif isinstance(icomap[0], torch.Tensor):
                 _type = "torch"
         elif isinstance(icomap, list):
             assert isinstance(icomap[0], dict)
-            if isinstance(icomap[0]["0"], np.ndarray):
+            if isinstance(icomap[0][0], np.ndarray):
                 _type = "numpy"
-            elif isinstance(icomap[0]["0"], torch.Tensor):
+            elif isinstance(icomap[0][0], torch.Tensor):
                 _type = "torch"
     elif ico_format == "list":
         assert isinstance(icomap, list)
