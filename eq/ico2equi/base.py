@@ -108,6 +108,8 @@ def ico2equi(
     # FIXME: any cleaner way of detecting?
     _type = None
     if ico_format == "dict":
+        print(icomap)
+        print(icomap[0].keys())
         if isinstance(icomap, dict):
             if isinstance(icomap[0], np.ndarray):
                 _type = "numpy"
