@@ -5,8 +5,8 @@ from typing import Any, Callable, Dict, List, Tuple, Optional, Union
 
 import numpy as np
 
-from  grid_sample import numpy_grid_sample
-from  numpy_utils import (
+from equilib.grid_sample import numpy_grid_sample
+from equilib.numpy_utils import (
     create_global2camera_rotation_matrix,
     create_grid,
     create_intrinsic_matrix,
@@ -159,10 +159,11 @@ def run(
     mode: str,
     override_func: Optional[Callable[[], Any]] = None,
 ) -> Union[List[np.ndarray], List[Dict[str, np.ndarray]]]:
-    """Run Equi2Pers
+    """Run Equi2Ico
 
     params:
     - equi (np.ndarray): 4 dims (b, c, h, w)
+    - sub_level (List[int]): list of subdivision levels
     - rot (List[dict]): dict of ('yaw', 'pitch', 'roll')
     - w_face (int): icosahedron face width
     - fov_x (float): fov of horizontal axis in degrees
@@ -219,6 +220,7 @@ def run(
 
     out_batch = [None for _ in range(bs)]
 
+    # iterate over each input image
     for bn, (rot, img) in enumerate(zip(rots, equi)):
         # number of icosahedron faces
         fn = len(rot)

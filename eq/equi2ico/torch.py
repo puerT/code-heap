@@ -1,14 +1,11 @@
 
 from functools import lru_cache
 from typing import Dict, List, Union, Tuple
-from numpy import float32
 
 import torch
 
-import torch
-
-from grid_sample import torch_grid_sample
-from torch_utils import (
+from equilib.grid_sample import torch_grid_sample
+from equilib.torch_utils import (
     create_global2camera_rotation_matrix,
     create_grid,
     create_intrinsic_matrix,
@@ -144,7 +141,7 @@ def run(
 
     params:
     - equi (np.ndarray): 4 dims (b, c, h, w)
-    - rot (List[dict]): dict of ('yaw', 'pitch', 'roll')
+    - sub_level (List[int]): list of subdivision levels
     - w_face (int): icosahedron face width
     - fov_x (float): fov of horizontal axis in degrees
     - mode (str): sampling mode for grid_sample
