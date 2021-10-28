@@ -18,7 +18,7 @@ def calculate_tangent_rots(
     for i, sub_lvl in enumerate(subdivision_level):
         faces = init_20_faces(radius)
         for _ in range(0, sub_lvl):
-            faces = subdivide_faces(faces, radius)
+            faces = subdivide_faces(faces)
         angles = calculate_angles(faces)
         for ang in angles:
             rots[i].append(
