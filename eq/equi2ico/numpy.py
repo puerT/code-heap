@@ -280,8 +280,8 @@ def run(
         )
 
         # reformat the output
-        if ico_format == 'dict':
-            out = ico2dict(out)
+        # if ico_format == 'dict':
+        #     out = ico2dict(out)
 
         out_batch[bn] = out
 
