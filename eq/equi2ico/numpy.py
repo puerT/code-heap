@@ -5,8 +5,8 @@ from typing import Any, Callable, Dict, List, Tuple, Optional, Union
 
 import numpy as np
 
-from equilib.grid_sample import numpy_grid_sample
-from equilib.numpy_utils import (
+from grid_sample import numpy_grid_sample
+from numpy_utils import (
     create_global2camera_rotation_matrix,
     create_grid,
     create_intrinsic_matrix,

@@ -4,8 +4,8 @@ from typing import Dict, List, Union, Tuple
 
 import torch
 
-from equilib.grid_sample import torch_grid_sample
-from equilib.torch_utils import (
+from grid_sample import torch_grid_sample
+from torch_utils import (
     create_global2camera_rotation_matrix,
     create_grid,
     create_intrinsic_matrix,

@@ -9,8 +9,8 @@ from torch import tensor
 from torch import cos, sin, tan, arccos, sqrt, sum
 from torch import deg2rad as radians
 
-from equilib.grid_sample import torch_grid_sample
-from equilib.torch_utils import (
+from grid_sample import torch_grid_sample
+from torch_utils import (
     get_device,
     pi,
     calculate_tangent_angles

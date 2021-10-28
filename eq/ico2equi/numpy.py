@@ -6,9 +6,9 @@ import collections
 
 import numpy as np
 
-from equilib.numpy_utils import calculate_tangent_angles
+from numpy_utils import calculate_tangent_angles
 
-from equilib.grid_sample import numpy_grid_sample
+from grid_sample import numpy_grid_sample
 
 __all__ = ["run"]
 
