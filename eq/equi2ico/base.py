@@ -28,11 +28,11 @@ IcoMaps = Union[
     List[List[np.ndarray]],
     List[List[torch.Tensor]],
     # single 'dict'
-    Dict[str, np.ndarray],
-    Dict[str, np.ndarray],
+    Dict[int, np.ndarray],
+    Dict[int, np.ndarray],
     # batch 'dict'
-    List[Dict[str, np.ndarray]],
-    List[Dict[str, np.ndarray]],
+    List[Dict[int, np.ndarray]],
+    List[Dict[int, np.ndarray]],
 ]
 
 class Equi2Ico(object):
