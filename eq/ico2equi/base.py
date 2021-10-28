@@ -107,19 +107,19 @@ def ico2equi(
     # Try and detect which type it is ("numpy" or "torch")
     # FIXME: any cleaner way of detecting?
     _type = None
-    # if ico_format == "dict":
-    #     if isinstance(icomap, dict):
-    #         if isinstance(icomap[0], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap[0], torch.Tensor):
-    #             _type = "torch"
-    #     elif isinstance(icomap, list):
-    #         assert isinstance(icomap[0], dict)
-    #         if isinstance(icomap[0][0], np.ndarray):
-    #             _type = "numpy"
-    #         elif isinstance(icomap[0][0], torch.Tensor):
-    #             _type = "torch"
-    if ico_format == "list":
+    if ico_format == "dict":
+        if isinstance(icomap, dict):
+            if isinstance(icomap[0], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap[0], torch.Tensor):
+                _type = "torch"
+        elif isinstance(icomap, list):
+            assert isinstance(icomap[0], dict)
+            if isinstance(icomap[0][0], np.ndarray):
+                _type = "numpy"
+            elif isinstance(icomap[0][0], torch.Tensor):
+                _type = "torch"
+    elif ico_format == "list":
         assert isinstance(icomap, list)
         if isinstance(icomap[0], list):
             if isinstance(icomap[0][0], np.ndarray):
@@ -133,8 +133,8 @@ def ico2equi(
                 _type = "torch"
     assert _type is not None, "ERR: input type is not numpy or torch"
     if _type == "numpy":
-        # if ico_format == "dict":
-        #     icomap = dict2list_numpy(icomap)
+        if ico_format == "dict":
+            icomap = dict2list_numpy(icomap)
         out = run_numpy(
             icomaps=icomap,
             height=height,
@@ -144,8 +144,8 @@ def ico2equi(
             **kwargs,
         )
     elif _type == "torch":
-        # if ico_format == "dict":
-        #     icomap = dict2list_torch(icomap)
+        if ico_format == "dict":
+            icomap = dict2list_torch(icomap)
         out = run_torch(
             icomaps=icomap,
             height=height,

@@ -320,10 +320,10 @@ def run(
         )
 
         # reformat the output
-        # if ico_format == 'dict':
-            # out_batch[bn] = ico2dict(out)
-        #else:
-        out_batch[bn] = out
+        if ico_format == 'dict':
+            out_batch[bn] = ico2dict(out)
+        else:
+            out_batch[bn] = out
         #torch.cuda.empty_cache()
 
     return out_batch
